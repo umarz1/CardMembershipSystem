@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MembershipSystem.Api.Models;
 using MembershipSystem.Api.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MembershipSystem.Api.Controllers
@@ -20,9 +21,17 @@ namespace MembershipSystem.Api.Controllers
         }
 
         [HttpGet("users/{cardId}")]
-        public ActionResult<User> GetUserByCardId(string cardId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public  ActionResult<User> GetUserByCardId(string cardId)
         {
-            var user = _userRepository.GetUserByCardId(cardId);
+            var user =  _userRepository.GetUserByCardId(cardId);
+
+            if (user == null)
+            {
+                return null;
+            }
+
             return Ok(user);
         }
 
