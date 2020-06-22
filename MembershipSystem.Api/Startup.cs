@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MembershipSystem.Api.Services;
+using MembershipSystem.Api.Services.ExecuteCommands;
+using MembershipSystem.Api.Services.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,6 +28,10 @@ namespace MembershipSystem.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IExecuters, Executers>();
+            services.AddTransient<ICommandText, CommandText>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddMvc();
             services.AddControllers();
         }
 

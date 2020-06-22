@@ -13,7 +13,7 @@ namespace MemebershipSystem.Migrations
                 args.FirstOrDefault()
                 ?? "Data Source=(local);Integrated Security=True; Database=MembershipSystem; ";
 
-            //EnsureDatabase.For.SqlDatabase(connectionString);
+            EnsureDatabase.For.SqlDatabase(connectionString);
 
             var upgrader =
                 DeployChanges.To.
