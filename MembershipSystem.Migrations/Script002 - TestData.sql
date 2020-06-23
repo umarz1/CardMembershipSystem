@@ -70,11 +70,13 @@ INSERT INTO CardUsers
            ,EmployeeId
            ,Name
            ,Email
-           ,Mobile)
+           ,Mobile
+           ,Pin)
      VALUES
            ('VyDJ0lbYcPkzp2Ju'
            ,'1234'
            ,'Muhammad Umar Zahir'
            ,'muhammad.zahir@sainsburys.co.uk'
-           ,'07746314396')
+           ,'07746314396'
+           ,'8881')
 GO

@@ -1,10 +1,11 @@
-﻿using MembershipSystem.Api.Models;
+﻿using MembershipSystem.Api.DTOs;
+using MembershipSystem.Api.Models;
 
 namespace MembershipSystem.Api.Services
 {
     public interface IUserRepository
     {
-        User GetUserByCardId(string cardId);
-        void AddUser(User user);
+        UserDto GetUserByCardId(string cardId);
+        UserDto AddUser(User user);
     }
 }

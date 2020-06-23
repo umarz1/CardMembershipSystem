@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.SqlClient;
+using System.Linq;
 using Dapper;
+using MembershipSystem.Api.DTOs;
 using MembershipSystem.Api.Models;
 using MembershipSystem.Api.Services.ExecuteCommands;
 using MembershipSystem.Api.Services.Queries;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace MembershipSystem.Api.Services
@@ -22,20 +26,38 @@ namespace MembershipSystem.Api.Services
             _executers = executers;
         }
 
-        public User GetUserByCardId(string cardId)
+        public UserDto GetUserByCardId(string cardId)
         {
             var user = _executers.ExecuteCommand<User>(_connStr, conn =>
             conn.Query<User>(_commandText.GetUserByCardId, new { @CardId = cardId }).SingleOrDefault());
-            return user;
+
+            return new UserDto
+            {
+                CardId = user.CardId,
+                Name = user.Name
+            };
         }
 
-        public void AddUser(User user)
+        public UserDto AddUser(User user)
         {
-            _executers.ExecuteCommand(_connStr, conn =>
+
+            var createdUser = new UserDto();
+            try
             {
-                var query = conn.Query<User>(_commandText.AddUser,
-                    new { EmployeeId = user.EmployeeId,  Name = user.Name, Email = user.Email, Mobile = user.Mobile });
-            });
+                _executers.ExecuteCommand(_connStr, conn =>
+                {
+                    var query = conn.Query<User>(_commandText.AddUser,
+                        new { CardId = user.CardId, EmployeeId = user.EmployeeId, Name = user.Name, Email = user.Email, Mobile = user.Mobile, Pin = user.Pin });
+                });
+
+                createdUser = GetUserByCardId(user.CardId);
+            }
+            catch (SqlException ex) when (ex.Number == 2627 | ex.Number == 547)
+            {
+                return null;
+            }
+
+            return createdUser;
         }
     }
 }

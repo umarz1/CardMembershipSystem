@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MembershipSystem.Api.DTOs;
 using MembershipSystem.Api.Models;
 using MembershipSystem.Api.Services;
 using Microsoft.AspNetCore.Http;
@@ -11,11 +12,11 @@ namespace MembershipSystem.Api.Controllers
 {
     [ApiController]
     [Route("")]
-    public class CardUserController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
 
-        public CardUserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
@@ -23,23 +24,31 @@ namespace MembershipSystem.Api.Controllers
         [HttpGet("users/{cardId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public  ActionResult<User> GetUserByCardId(string cardId)
+        public  ActionResult<UserDto> GetUserByCardId(string cardId)
         {
             var user =  _userRepository.GetUserByCardId(cardId);
 
             if (user == null)
             {
-                return null;
+                return NotFound();
             }
 
             return Ok(user);
         }
 
         [HttpPost("users")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult AddUser(User user)
         {
-            _userRepository.AddUser(user);
-            return Ok(user);
+           var response = _userRepository.AddUser(user);
+
+            if(response == null)
+            {
+                return BadRequest();
+            }
+
+            return CreatedAtAction(nameof(GetUserByCardId), new { CardId = user.CardId}, response);
         }
 
     }
