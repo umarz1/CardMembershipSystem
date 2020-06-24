@@ -14,12 +14,12 @@ using Xunit;
 
 namespace MembershipSystemApi.Tests
 {
-    public class GetUser
+    public class GetMember
         : IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> _factory;
 
-        public GetUser(WebApplicationFactory<Startup> factory)
+        public GetMember(WebApplicationFactory<Startup> factory)
         {
             _factory = factory;
         }
@@ -27,61 +27,60 @@ namespace MembershipSystemApi.Tests
         #region Unit Tests
 
         [Fact]
-        public async Task GetUserByCardId_Returns_User_If_User_Exists()
+        public async Task GetMember_Returns_Member_If_Member_Exists()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
-            var userRepo = new Mock<IUserRepository>();
-            var testUser = new UserDto
+            var userRepo = new Mock<IMembershipRepository>();
+            var testEmployee = new EmployeeDto
             {
-                CardId = "ByDJ0lbYcPkzp2Ja",
                 Name = "Test User",
             };
 
-            userRepo.Setup(x => x.GetUserByCardId(cardId)).Returns(testUser);
+            userRepo.Setup(x => x.GetMember(cardId)).Returns(testEmployee);
 
             // Act
-            var controller = new UserController(userRepo.Object);
-            var result = controller.GetUserByCardId(cardId);
+            var controller = new EmployeeController(userRepo.Object);
+            var result = controller.GetMember(cardId);
 
             var resultUser = (OkObjectResult)result.Result;
-            
+
             // Assert
-           Assert.Equal(testUser, resultUser.Value);
+            Assert.Equal(testEmployee, resultUser.Value);
         }
 
         [Fact]
-        public async Task GetUserByCardId_Returns_Null_If_User_Does_Not_Exists()
+        public async Task GetMember_Returns_Null_If_Member_Does_Not_Exists()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
-            var userRepo = new Mock<IUserRepository>();
+            var userRepo = new Mock<IMembershipRepository>();
 
-            userRepo.Setup(x => x.GetUserByCardId(It.IsAny<string>())).Returns(() => null);
+            userRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new UserController(userRepo.Object);
-            var result = controller.GetUserByCardId(cardId);
+            var controller = new EmployeeController(userRepo.Object);
+            var result = controller.GetMember(cardId);
 
             // Assert
             Assert.Equal(null, result.Value);
         }
 
         [Fact]
-        public async Task GetUserByCardId_Is_Called_Once()
+        public async Task GetMember_Is_Called_Once()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
-            var userRepo = new Mock<IUserRepository>();
+            var userRepo = new Mock<IMembershipRepository>();
 
-            userRepo.Setup(x => x.GetUserByCardId(It.IsAny<string>())).Returns(() => null);
+            userRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new UserController(userRepo.Object);
-            var result = controller.GetUserByCardId(cardId);
+            var controller = new EmployeeController(userRepo.Object);
+            var result = controller.GetMember(cardId);
 
             // Assert 
-            userRepo.Verify(x => x.GetUserByCardId(cardId), Times.Once);
+            userRepo.Verify(x => x.GetMember(cardId), Times.Once);
         }
         #endregion
 
@@ -95,13 +94,13 @@ namespace MembershipSystemApi.Tests
             {
                 builder.ConfigureTestServices(services =>
                 {
-                    services.AddScoped<IUserRepository, UserRepositoryFake>();
+                    services.AddScoped<IMembershipRepository, MemberRepositoryFake>();
                 });
             }).CreateClient();
 
-            var cardId = "ByDJ0lbYcPkzp2Ja";
+            var cardId = "VyDJ0lbYcPkzp2Ju";
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"/users/{cardId}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"/members/{cardId}");
 
             // Act
             var response = await client.SendAsync(request);
@@ -111,7 +110,6 @@ namespace MembershipSystemApi.Tests
 
             await response.AssertJsonDeepEquals(new
             {
-                cardId = "ByDJ0lbYcPkzp2Ja",
                 name = "Test User1",
             });
         }
@@ -124,13 +122,13 @@ namespace MembershipSystemApi.Tests
             {
                 builder.ConfigureTestServices(services =>
                 {
-                    services.AddScoped<IUserRepository, UserRepositoryFake>();
+                    services.AddScoped<IMembershipRepository, MemberRepositoryFake>();
                 });
             }).CreateClient();
 
             var cardId = "ByDJ0lbYcPkzp2Ja";
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"/users/'{cardId}'");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"/members/{cardId}");
 
             // Act
             var response = await client.SendAsync(request);

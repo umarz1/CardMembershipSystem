@@ -4,5 +4,7 @@
     {
         string GetUserByCardId { get; }
         string AddUser { get; }
+
+        string AddCard { get; }
     }
 }

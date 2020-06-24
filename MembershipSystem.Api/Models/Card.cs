@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MembershipSystem.Api.DTOs
+namespace MembershipSystem.Api.Models
 {
-    public class UserDto
+    public class Card
     {
         public string CardId { get; set; }
-        public string Name { get; set; }
+        public string EmployeeId { get; set; }
+        public string Pin { get; set; }
     }
 }

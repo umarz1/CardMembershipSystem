@@ -11,14 +11,14 @@ using Microsoft.Extensions.Configuration;
 
 namespace MembershipSystem.Api.Services
 {
-    public class UserRepository: IUserRepository
+    public class MemberRepository: IMembershipRepository
     {
         private readonly IConfiguration _configuration;
         private readonly ICommandText _commandText;
         private readonly string _connStr;
         private readonly IExecuters _executers;
 
-        public UserRepository(IConfiguration configuration, ICommandText commandText, IExecuters executers)
+        public MemberRepository(IConfiguration configuration, ICommandText commandText, IExecuters executers)
         {
             _commandText = commandText;
             _configuration = configuration;
@@ -26,31 +26,32 @@ namespace MembershipSystem.Api.Services
             _executers = executers;
         }
 
-        public UserDto GetUserByCardId(string cardId)
+        public EmployeeDto GetMember(string cardId)
         {
-            var user = _executers.ExecuteCommand<User>(_connStr, conn =>
-            conn.Query<User>(_commandText.GetUserByCardId, new { @CardId = cardId }).SingleOrDefault());
+            var employee = _executers.ExecuteCommand<Employee>(_connStr, conn =>
+            conn.Query<Employee>(_commandText.GetUserByCardId, new { @CardId = cardId }).SingleOrDefault());
 
-            return new UserDto
+            return new EmployeeDto
             {
-                CardId = user.CardId,
-                Name = user.Name
+                Name = employee.Name
             };
         }
 
-        public UserDto AddUser(User user)
+        public EmployeeDto AddMember(Member member)
         {
-
-            var createdUser = new UserDto();
+            var createdUser = new EmployeeDto();
             try
             {
                 _executers.ExecuteCommand(_connStr, conn =>
                 {
-                    var query = conn.Query<User>(_commandText.AddUser,
-                        new { CardId = user.CardId, EmployeeId = user.EmployeeId, Name = user.Name, Email = user.Email, Mobile = user.Mobile, Pin = user.Pin });
+                    var addUser = conn.Query<Member>(_commandText.AddUser,
+                        new { EmployeeId = member.EmployeeId, Name = member.Name, Email = member.Email, Mobile = member.Mobile});
+
+                    var addCard = conn.Query<Member>(_commandText.AddCard,
+                        new { CardId = member.CardId, EmployeeId = member.EmployeeId, Pin= member.Pin });
                 });
 
-                createdUser = GetUserByCardId(user.CardId);
+                createdUser = GetMember(member.CardId);
             }
             catch (SqlException ex) when (ex.Number == 2627 | ex.Number == 547)
             {

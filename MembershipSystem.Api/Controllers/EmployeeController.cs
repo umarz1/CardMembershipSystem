@@ -8,43 +8,43 @@ namespace MembershipSystem.Api.Controllers
 {
     [ApiController]
     [Route("")]
-    public class UserController : ControllerBase
+    public class EmployeeController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IMembershipRepository _userRepository;
 
-        public UserController(IUserRepository userRepository)
+        public EmployeeController(IMembershipRepository userRepository)
         {
             _userRepository = userRepository;
         }
 
-        [HttpGet("users/{cardId}")]
+        [HttpGet("members/{cardId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<UserDto> GetUserByCardId(string cardId)
+        public ActionResult<EmployeeDto> GetMember(string cardId)
         {
-            var user = _userRepository.GetUserByCardId(cardId);
+            var member = _userRepository.GetMember(cardId);
 
-            if (user == null)
+            if (member == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(member);
         }
 
-        [HttpPost("users")]
+        [HttpPost("members")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult AddUser([FromBody]User user)
+        public ActionResult AddMember([FromBody]Member member)
         {
-            var response = _userRepository.AddUser(user);
+            var response = _userRepository.AddMember(member);
 
-            if(response == null)
+            if (response == null)
             {
                 return BadRequest();
             }
 
-            return CreatedAtAction(nameof(GetUserByCardId), new { CardId = user.CardId }, response);
+            return CreatedAtAction(nameof(GetMember), new { CardId = member.CardId }, response);
         }
 
     }

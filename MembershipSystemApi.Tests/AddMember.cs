@@ -14,12 +14,12 @@ using Xunit;
 
 namespace MembershipSystemApi.Tests
 {
-    public class AddUser
+    public class AddMember
         : IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> _factory;
 
-        public AddUser(WebApplicationFactory<Startup> factory)
+        public AddMember(WebApplicationFactory<Startup> factory)
         {
             _factory = factory;
         }
@@ -27,12 +27,12 @@ namespace MembershipSystemApi.Tests
         #region Unit Tests
 
         [Fact]
-        public async Task AddUser_Returns_User_When_Created()
+        public async Task AddMember_Returns_Member_When_Created()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
 
-            var newUser = new User
+            var newMember = new Member
             {
                 CardId = cardId,
                 Name = "Test User",
@@ -42,19 +42,18 @@ namespace MembershipSystemApi.Tests
                 Pin = "3433"
             };
 
-            var createUser = new UserDto()
+            var createMember = new EmployeeDto()
             {
-                CardId = cardId,
                 Name = "Test User"
             };
 
-            var userRepo = new Mock<IUserRepository>();
+            var userRepo = new Mock<IMembershipRepository>();
 
-            userRepo.Setup(x => x.AddUser(newUser)).Returns(createUser);
+            userRepo.Setup(x => x.AddMember(newMember)).Returns(createMember);
 
             // Act
-            var controller = new UserController(userRepo.Object);
-            var result = controller.AddUser(newUser);
+            var controller = new EmployeeController(userRepo.Object);
+            var result = controller.AddMember(newMember);
 
             //var resultUser = (OkObjectResult)result.Result;
 
@@ -67,30 +66,30 @@ namespace MembershipSystemApi.Tests
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
-            var userRepo = new Mock<IUserRepository>();
+            var membershipRepo = new Mock<IMembershipRepository>();
 
-            userRepo.Setup(x => x.GetUserByCardId(It.IsAny<string>())).Returns(() => null);
+            membershipRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new UserController(userRepo.Object);
-            var result = controller.GetUserByCardId(cardId);
+            var controller = new EmployeeController(membershipRepo.Object);
+            var result = controller.GetMember(cardId);
 
             // Assert
             Assert.Equal(null, result.Value);
         }
 
         //[Fact]
-        //public async Task AddUser_Is_Called_Once()
+        //public async Task AddMember_Is_Called_Once()
         //{
         //    // Arrange
         //    var cardId = "ByDJ0lbYcPkzp2Ja";
-        //    var userRepo = new Mock<IUserRepository>();
+        //    var userRepo = new Mock<IMembershipRepository>();
 
-        //    userRepo.Setup(x => x.GetUserByCardId(It.IsAny<string>())).Returns(() => null);
+        //    userRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
         //    // Act
-        //    var controller = new UserController(userRepo.Object);
-        //    var result = controller.GetUserByCardId(cardId);
+        //    var controller = new EmployeeController(userRepo.Object);
+        //    var result = controller.GetMember(cardId);
 
         //    // Assert 
         //    userRepo.Verify(x => x.GetUserByCardId(cardId), Times.Once);
@@ -100,18 +99,18 @@ namespace MembershipSystemApi.Tests
         #region Integration Tests
 
         [Fact]
-        public async Task Valid_Request_Returns_User()
+        public async Task Valid_Request_Returns_Member()
         {
             // Arrange
             var client = _factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureTestServices(services =>
                 {
-                    services.AddScoped<IUserRepository, UserRepositoryFake>();
+                    services.AddScoped<IMembershipRepository, MemberRepositoryFake>();
                 });
             }).CreateClient();
 
-            var request = new HttpRequestMessage(HttpMethod.Post, $"/users")
+            var request = new HttpRequestMessage(HttpMethod.Post, $"/members")
                 .WithJsonContent(new
                 {
                     cardId = "ByDJ0lbYcPkzp2Jx",
@@ -130,26 +129,25 @@ namespace MembershipSystemApi.Tests
 
             await response.AssertJsonDeepEquals(new
             {
-                cardId = "ByDJ0lbYcPkzp2Jx",
                 name = "Test User",
             });
         }
 
         [Fact]
-        public async Task User_Already_Exists_Returns_Bad_Request()
+        public async Task Member_Already_Exists_Returns_Bad_Request()
         {
             // Arrange
             var client = _factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureTestServices(services =>
                 {
-                    services.AddScoped<IUserRepository, UserRepositoryFake>();
+                    services.AddScoped<IMembershipRepository, MemberRepositoryFake>();
                 });
             }).CreateClient();
 
-            var existingCardId = "ByDJ0lbYcPkzp2Ja";
+            var existingCardId = "VyDJ0lbYcPkzp2Ju";
 
-            var request = new HttpRequestMessage(HttpMethod.Post, $"/users")
+            var request = new HttpRequestMessage(HttpMethod.Post, $"/members")
                 .WithJsonContent(new
                 {
                     cardId = existingCardId,
@@ -166,7 +164,6 @@ namespace MembershipSystemApi.Tests
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-
         #endregion
     }
 }

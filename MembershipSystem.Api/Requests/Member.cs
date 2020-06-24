@@ -1,6 +1,6 @@
 ﻿namespace MembershipSystem.Api.Models
 {
-    public class User
+    public class Member
     {
         public string CardId { get; set; }
         public string EmployeeId {get;set;}
