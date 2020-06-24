@@ -1,18 +1,15 @@
-using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MembershipSystem.Api;
 using MembershipSystem.Api.Controllers;
 using MembershipSystem.Api.DTOs;
-using MembershipSystem.Api.Models;
 using MembershipSystem.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace MembershipSystemApi.Tests
@@ -115,7 +112,7 @@ namespace MembershipSystemApi.Tests
             await response.AssertJsonDeepEquals(new
             {
                 cardId = "ByDJ0lbYcPkzp2Ja",
-                name = "Test User",
+                name = "Test User1",
             });
         }
 
