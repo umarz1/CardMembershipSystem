@@ -64,13 +64,13 @@ namespace MembershipSystemApi.Tests
             return JToken.Parse(responseContent);
         }
 
-        //public static HttpRequestMessage WithJsonContent(this HttpRequestMessage request, object json)
-        //{
-        //    var serialized = JsonConvert.SerializeObject(json, Json.SerializerSettings);
+        public static HttpRequestMessage WithJsonContent(this HttpRequestMessage request, object json)
+        {
+            var serialized = JsonConvert.SerializeObject(json);
 
-        //    request.Content = new StringContent(serialized, Encoding.UTF8, JsonContentType);
+            request.Content = new StringContent(serialized, Encoding.UTF8, JsonContentType);
 
-        //    return request;
-        //}
+            return request;
+        }
     }
 }

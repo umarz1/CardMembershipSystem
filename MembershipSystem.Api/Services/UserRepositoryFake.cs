@@ -33,11 +33,6 @@ namespace MembershipSystem.Api.Services
             }
         };
 
-        public UserDto AddUser(User user)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public UserDto GetUserByCardId(string cardId)
         {
             var user = users.Where(u => u.CardId == cardId).FirstOrDefault();
@@ -50,13 +45,25 @@ namespace MembershipSystem.Api.Services
             return user;
         }
 
-        //public void AddUser(User user)
-        //{
-        //    _executers.ExecuteCommand(_connStr, conn =>
-        //    {
-        //        var query = conn.Query<User>(_commandText.AddUser,
-        //            new { EmployeeId = user.EmployeeId,  Name = user.Name, Email = user.Email, Mobile = user.Mobile });
-        //    });
-        //}
+        public UserDto AddUser(User user)
+        {
+            var createdUser = users.Where(u => u.CardId == user.CardId).FirstOrDefault();
+
+            if(createdUser != null)
+            {
+                return null;
+            }
+
+            //users.Add(new UserDto
+            //{
+            //    CardId = user.CardId,
+            //    Name = user.Name
+            //});
+
+           
+
+
+            return createdUser;
+        }
     }
 }
