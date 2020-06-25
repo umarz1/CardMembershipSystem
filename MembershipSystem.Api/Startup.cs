@@ -31,6 +31,7 @@ namespace MembershipSystem.Api
             services.AddTransient<IExecuters, Executers>();
             services.AddTransient<ICommandText, CommandText>();
             services.AddTransient<IMembershipRepository, MemberRepository>();
+            services.AddTransient<ICardTransactionsRepository,CardTransactionsRepository>();
             services.AddMvc();
             services.AddControllers();
         }

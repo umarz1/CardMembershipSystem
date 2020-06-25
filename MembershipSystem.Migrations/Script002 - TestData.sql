@@ -19,3 +19,18 @@ INSERT INTO Cards
            ,'1234'
            ,'8881')
 GO
+
+INSERT INTO CardTransactions
+           (TransactionId
+           ,CardId
+           ,Date
+           ,Amount
+           ,Balance)
+     VALUES
+           ('a4040c1d-09f5-4dc9-aff7-0cae8747bcfe'
+           ,'VyDJ0lbYcPkzp2Ju'
+           ,'2020-06-25 00:00:00'
+           ,0
+           ,0)
+GO
+
