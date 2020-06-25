@@ -2,9 +2,9 @@
 {
     public class CommandText : ICommandText
     {
-        public string GetMemberByCardId => @"SELECT e.EmployeeId, e.Name, e.Email, e.Mobile
-                                          FROM Employees e 
-                                          JOIN Cards c ON e.EmployeeId= c.EmployeeId 
+        public string GetMemberByCardId => @"SELECT m.EmployeeId, m.Name, m.Email, m.Mobile
+                                          FROM Members m 
+                                          JOIN Cards c ON m.EmployeeId= c.EmployeeId 
                                           WHERE c.CardId = @CardId";
 
         public string AddMember => @"INSERT INTO Members (EmployeeId, Name, Email, Mobile)
@@ -20,8 +20,12 @@
 
         public string AddAmountToCard => @"DECLARE @CurrentBalance Decimal;
                                            SET @CurrentBalance = (SELECT TOP(1) Balance from CardTransactions where CardId= @CardId ORDER BY Date DESC)
-
-                                           INSERT INTO CardTransactions(TransactionId, CardId, Date, Amount, Balance)
-                                           VALUES(@TransactionId, @CardId, GETDATE(), @Amount, @CurrentBalance + @Amount)";
+                                           
+                                           IF @CurrentBalance IS NULL
+                                                 INSERT INTO CardTransactions(TransactionId, CardId, Date, Amount, Balance)
+                                                 VALUES(@TransactionId, @CardId, GETDATE(), @Amount, @Amount)
+                                           ELSE 
+                                                 INSERT INTO CardTransactions(TransactionId, CardId, Date, Amount, Balance)
+                                                 VALUES(@TransactionId, @CardId, GETDATE(), @Amount, @CurrentBalance + @Amount)";
     }
 }

@@ -8,7 +8,7 @@ namespace MembershipSystem.Api.Models
     public class CardTransaction
     {
         public Guid TransactionId { get; set; }
-        public string Card { get; set; }
+        public string CardId { get; set; }
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }
         public decimal Balance { get; set; }

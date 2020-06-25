@@ -8,7 +8,7 @@ namespace MembershipSystem.Api.Services
     public class MemberRepositoryFake : IMembershipRepository
     {
 
-        public Dictionary<string, Member> employees = new Dictionary<string, Member>()
+        public Dictionary<string, Member> members = new Dictionary<string, Member>()
         {
             {"9997", new Member{ EmployeeId="9997", Name= "Test User1", Email = "test.user1@hotmail.com", Mobile ="07745314222"} },
             {"9998", new Member{ EmployeeId="9998", Name = "Test User2", Email = "test.user2@hotmail.com", Mobile ="07745314222"} },
@@ -31,7 +31,7 @@ namespace MembershipSystem.Api.Services
                 return null;
             }
 
-            var emp = employees.Where(e => e.Value.EmployeeId == card.Value.EmployeeId).FirstOrDefault();
+            var emp = members.Where(e => e.Value.EmployeeId == card.Value.EmployeeId).FirstOrDefault();
 
             return new MemberDto { Name = emp.Value.Name };
         }
@@ -53,7 +53,7 @@ namespace MembershipSystem.Api.Services
                 Pin = member.Pin
             };
 
-            if (employees.TryAdd(member.EmployeeId, employee) && cards.TryAdd(member.CardId, card))
+            if (members.TryAdd(member.EmployeeId, employee) && cards.TryAdd(member.CardId, card))
             {
                 return new MemberDto { Name = employee.Name };
             }

@@ -32,6 +32,11 @@ namespace MembershipSystem.Api.Services
             var lastTransaction = _executers.ExecuteCommand<CardTransaction>(_connStr, conn =>
             conn.Query<CardTransaction>(_commandText.GetLatestCardTransactionByCardId, new { @CardId = cardId }).SingleOrDefault());
 
+            if(lastTransaction == null)
+            {
+                return null;
+            }
+
             return new CardTransactionDto
             {
                 Date = lastTransaction.Date,
