@@ -33,7 +33,7 @@ namespace MembershipSystemApi.Tests
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
 
-            var newMember = new Member
+            var newMember = new NewMember
             {
                 CardId = cardId,
                 Name = "Test User",
@@ -43,7 +43,7 @@ namespace MembershipSystemApi.Tests
                 Pin = "3433"
             };
 
-            var createdMember = new EmployeeDto()
+            var createdMember = new MemberDto()
             {
                 Name = "Test User"
             };
@@ -53,7 +53,7 @@ namespace MembershipSystemApi.Tests
             membershipRepo.Setup(x => x.AddMember(newMember)).Returns(createdMember);
 
             // Act
-            var controller = new EmployeeController(membershipRepo.Object);
+            var controller = new MemberController(membershipRepo.Object);
             var result = controller.AddMember(newMember);
 
             var resultMember = (CreatedAtActionResult)result;
@@ -72,7 +72,7 @@ namespace MembershipSystemApi.Tests
             membershipRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new EmployeeController(membershipRepo.Object);
+            var controller = new MemberController(membershipRepo.Object);
             var result = controller.GetMember(cardId);
 
             // Assert
@@ -85,7 +85,7 @@ namespace MembershipSystemApi.Tests
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
 
-            var newMember = new Member
+            var newMember = new NewMember
             {
                 CardId = cardId,
                 Name = "Test User",
@@ -95,7 +95,7 @@ namespace MembershipSystemApi.Tests
                 Pin = "3433"
             };
 
-            var createdMember = new EmployeeDto()
+            var createdMember = new MemberDto()
             {
                 Name = "Test User"
             };
@@ -105,7 +105,7 @@ namespace MembershipSystemApi.Tests
             memebershipRepo.Setup(x => x.AddMember(newMember)).Returns(createdMember);
 
             // Act
-            var controller = new EmployeeController(memebershipRepo.Object);
+            var controller = new MemberController(memebershipRepo.Object);
             var result = controller.AddMember(newMember);
 
             // Assert 

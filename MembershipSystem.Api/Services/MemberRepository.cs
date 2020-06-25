@@ -26,28 +26,28 @@ namespace MembershipSystem.Api.Services
             _executers = executers;
         }
 
-        public EmployeeDto GetMember(string cardId)
+        public MemberDto GetMember(string cardId)
         {
-            var employee = _executers.ExecuteCommand<Employee>(_connStr, conn =>
-            conn.Query<Employee>(_commandText.GetEmployeeByCardId, new { @CardId = cardId }).SingleOrDefault());
+            var member = _executers.ExecuteCommand<Member>(_connStr, conn =>
+            conn.Query<Member>(_commandText.GetMemberByCardId, new { @CardId = cardId }).SingleOrDefault());
 
-            return new EmployeeDto
+            return new MemberDto
             {
-                Name = employee.Name
+                Name = member.Name
             };
         }
 
-        public EmployeeDto AddMember(Member member)
+        public MemberDto AddMember(NewMember member)
         {
-            var createdMember = new EmployeeDto();
+            var createdMember = new MemberDto();
             try
             {
                 _executers.ExecuteCommand(_connStr, conn =>
                 {
-                    var addEmployee = conn.Query<Member>(_commandText.AddEmployee,
+                    var addMember= conn.Query<NewMember>(_commandText.AddMember,
                         new { EmployeeId = member.EmployeeId, Name = member.Name, Email = member.Email, Mobile = member.Mobile});
 
-                    var addCard = conn.Query<Member>(_commandText.AddCard,
+                    var addCard = conn.Query<NewMember>(_commandText.AddCard,
                         new { CardId = member.CardId, EmployeeId = member.EmployeeId, Pin= member.Pin });
                 });
 

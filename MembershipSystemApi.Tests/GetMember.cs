@@ -32,21 +32,21 @@ namespace MembershipSystemApi.Tests
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
             var memebershipRepo = new Mock<IMembershipRepository>();
-            var testEmployee = new EmployeeDto
+            var testMember = new MemberDto
             {
                 Name = "Test User",
             };
 
-            memebershipRepo.Setup(x => x.GetMember(cardId)).Returns(testEmployee);
+            memebershipRepo.Setup(x => x.GetMember(cardId)).Returns(testMember);
 
             // Act
-            var controller = new EmployeeController(memebershipRepo.Object);
+            var controller = new MemberController(memebershipRepo.Object);
             var result = controller.GetMember(cardId);
 
             var resultMember = (OkObjectResult)result.Result;
 
             // Assert
-            Assert.Equal(testEmployee, resultMember.Value);
+            Assert.Equal(testMember, resultMember.Value);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace MembershipSystemApi.Tests
             membershipRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new EmployeeController(membershipRepo.Object);
+            var controller = new MemberController(membershipRepo.Object);
             var result = controller.GetMember(cardId);
 
             // Assert
@@ -76,7 +76,7 @@ namespace MembershipSystemApi.Tests
             memebershipRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new EmployeeController(memebershipRepo.Object);
+            var controller = new MemberController(memebershipRepo.Object);
             var result = controller.GetMember(cardId);
 
             // Assert 

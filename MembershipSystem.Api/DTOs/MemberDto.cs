@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MembershipSystem.Api.DTOs
 {
-    public class EmployeeDto
+    public class MemberDto
     {
         public string Name { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿INSERT INTO Employees
+﻿INSERT INTO Members
            (EmployeeId
            ,Name
            ,Email

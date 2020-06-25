@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MembershipSystem.Api.Models
 {
-    public class Employee
+    public class Member
     {
         public string EmployeeId { get; set; }
         public string Name { get; set; }

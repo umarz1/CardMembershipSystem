@@ -5,7 +5,7 @@ namespace MembershipSystem.Api.Services
 {
     public interface IMembershipRepository
     {
-        EmployeeDto GetMember(string cardId);
-        EmployeeDto AddMember(Member member);
+        MemberDto GetMember(string cardId);
+        MemberDto AddMember(NewMember member);
     }
 }

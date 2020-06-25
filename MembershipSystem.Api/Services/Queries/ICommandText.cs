@@ -2,8 +2,8 @@
 {
     public interface ICommandText
     {
-        string GetEmployeeByCardId { get; }
-        string AddEmployee { get; }
+        string GetMemberByCardId { get; }
+        string AddMember { get; }
 
         string AddCard { get; }
     }
