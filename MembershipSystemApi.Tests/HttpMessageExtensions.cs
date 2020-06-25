@@ -1,10 +1,4 @@
-﻿using MembershipSystem.Api.Services;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Builder;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -23,24 +17,6 @@ namespace MembershipSystemApi.Tests
         {
             _serializer = Newtonsoft.Json.JsonSerializer.Create();
         }
-
-        //public static async Task AssertHasError(
-        //    this HttpResponseMessage response,
-        //    string expectedErrorCode,
-        //    int expectedStatusCode = 400,
-        //    Option<object> expectedData = default)
-        //{
-        //    Assert.Equal(expectedStatusCode, (int)response.StatusCode);
-
-        //    var json = await response.GetResponseJson();
-
-        //    Assert.Equal(expectedErrorCode, json["error"]["code"].ToString());
-
-        //    if (expectedData.HasValue)
-        //    {
-        //        AssertEx.AssertJsonObjectEquals(expectedData.ValueOrFailure(), json["error"]["data"]);
-        //    }
-        //}
 
         public static Task AssertJsonDeepEquals(this HttpResponseMessage response, object expected)
         {

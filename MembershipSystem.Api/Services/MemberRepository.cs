@@ -29,7 +29,7 @@ namespace MembershipSystem.Api.Services
         public EmployeeDto GetMember(string cardId)
         {
             var employee = _executers.ExecuteCommand<Employee>(_connStr, conn =>
-            conn.Query<Employee>(_commandText.GetUserByCardId, new { @CardId = cardId }).SingleOrDefault());
+            conn.Query<Employee>(_commandText.GetEmployeeByCardId, new { @CardId = cardId }).SingleOrDefault());
 
             return new EmployeeDto
             {
@@ -39,26 +39,26 @@ namespace MembershipSystem.Api.Services
 
         public EmployeeDto AddMember(Member member)
         {
-            var createdUser = new EmployeeDto();
+            var createdMember = new EmployeeDto();
             try
             {
                 _executers.ExecuteCommand(_connStr, conn =>
                 {
-                    var addUser = conn.Query<Member>(_commandText.AddUser,
+                    var addEmployee = conn.Query<Member>(_commandText.AddEmployee,
                         new { EmployeeId = member.EmployeeId, Name = member.Name, Email = member.Email, Mobile = member.Mobile});
 
                     var addCard = conn.Query<Member>(_commandText.AddCard,
                         new { CardId = member.CardId, EmployeeId = member.EmployeeId, Pin= member.Pin });
                 });
 
-                createdUser = GetMember(member.CardId);
+                createdMember = GetMember(member.CardId);
             }
             catch (SqlException ex) when (ex.Number == 2627 | ex.Number == 547)
             {
                 return null;
             }
 
-            return createdUser;
+            return createdMember;
         }
     }
 }

@@ -6,6 +6,6 @@ namespace MembershipSystem.Api.Services
     public interface IMembershipRepository
     {
         EmployeeDto GetMember(string cardId);
-        EmployeeDto AddMember(Member user);
+        EmployeeDto AddMember(Member member);
     }
 }

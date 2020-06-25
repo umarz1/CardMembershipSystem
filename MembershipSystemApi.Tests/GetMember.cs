@@ -31,22 +31,22 @@ namespace MembershipSystemApi.Tests
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
-            var userRepo = new Mock<IMembershipRepository>();
+            var memebershipRepo = new Mock<IMembershipRepository>();
             var testEmployee = new EmployeeDto
             {
                 Name = "Test User",
             };
 
-            userRepo.Setup(x => x.GetMember(cardId)).Returns(testEmployee);
+            memebershipRepo.Setup(x => x.GetMember(cardId)).Returns(testEmployee);
 
             // Act
-            var controller = new EmployeeController(userRepo.Object);
+            var controller = new EmployeeController(memebershipRepo.Object);
             var result = controller.GetMember(cardId);
 
-            var resultUser = (OkObjectResult)result.Result;
+            var resultMember = (OkObjectResult)result.Result;
 
             // Assert
-            Assert.Equal(testEmployee, resultUser.Value);
+            Assert.Equal(testEmployee, resultMember.Value);
         }
 
         [Fact]
@@ -54,12 +54,12 @@ namespace MembershipSystemApi.Tests
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
-            var userRepo = new Mock<IMembershipRepository>();
+            var membershipRepo = new Mock<IMembershipRepository>();
 
-            userRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
+            membershipRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new EmployeeController(userRepo.Object);
+            var controller = new EmployeeController(membershipRepo.Object);
             var result = controller.GetMember(cardId);
 
             // Assert
@@ -71,23 +71,23 @@ namespace MembershipSystemApi.Tests
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
-            var userRepo = new Mock<IMembershipRepository>();
+            var memebershipRepo = new Mock<IMembershipRepository>();
 
-            userRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
+            memebershipRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new EmployeeController(userRepo.Object);
+            var controller = new EmployeeController(memebershipRepo.Object);
             var result = controller.GetMember(cardId);
 
             // Assert 
-            userRepo.Verify(x => x.GetMember(cardId), Times.Once);
+            memebershipRepo.Verify(x => x.GetMember(cardId), Times.Once);
         }
         #endregion
 
         #region Integration Tests
 
         [Fact]
-        public async Task Valid_Request_Returns_User()
+        public async Task Valid_Request_Returns_Member()
         {
             // Arrange
             var client = _factory.WithWebHostBuilder(builder =>
@@ -115,7 +115,7 @@ namespace MembershipSystemApi.Tests
         }
 
         [Fact]
-        public async Task User_Does_Not_Exist_Returns_NotFound()
+        public async Task Member_Does_Not_Exist_Returns_NotFound()
         {
             // Arrange
             var client = _factory.WithWebHostBuilder(builder =>

@@ -6,6 +6,7 @@ using MembershipSystem.Api.Controllers;
 using MembershipSystem.Api.DTOs;
 using MembershipSystem.Api.Models;
 using MembershipSystem.Api.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,27 +43,27 @@ namespace MembershipSystemApi.Tests
                 Pin = "3433"
             };
 
-            var createMember = new EmployeeDto()
+            var createdMember = new EmployeeDto()
             {
                 Name = "Test User"
             };
 
-            var userRepo = new Mock<IMembershipRepository>();
+            var membershipRepo = new Mock<IMembershipRepository>();
 
-            userRepo.Setup(x => x.AddMember(newMember)).Returns(createMember);
+            membershipRepo.Setup(x => x.AddMember(newMember)).Returns(createdMember);
 
             // Act
-            var controller = new EmployeeController(userRepo.Object);
+            var controller = new EmployeeController(membershipRepo.Object);
             var result = controller.AddMember(newMember);
 
-            //var resultUser = (OkObjectResult)result.Result;
+            var resultMember = (CreatedAtActionResult)result;
 
             // Assert
-            //Assert.Equal(testUser, resultUser.Value);
+            Assert.Equal(createdMember, resultMember.Value);
         }
 
         [Fact]
-        public async Task AddUser_Returns_Null_If_User_Does_Not_Exists()
+        public async Task AddMember_Returns_Null_If_Fails_To_Create()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
@@ -78,22 +79,38 @@ namespace MembershipSystemApi.Tests
             Assert.Equal(null, result.Value);
         }
 
-        //[Fact]
-        //public async Task AddMember_Is_Called_Once()
-        //{
-        //    // Arrange
-        //    var cardId = "ByDJ0lbYcPkzp2Ja";
-        //    var userRepo = new Mock<IMembershipRepository>();
+        [Fact]
+        public async Task AddMember_Is_Called_Once()
+        {
+            // Arrange
+            var cardId = "ByDJ0lbYcPkzp2Ja";
 
-        //    userRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
+            var newMember = new Member
+            {
+                CardId = cardId,
+                Name = "Test User",
+                EmployeeId = "1234",
+                Email = "test.user@hotmail.com",
+                Mobile = "0774564154",
+                Pin = "3433"
+            };
 
-        //    // Act
-        //    var controller = new EmployeeController(userRepo.Object);
-        //    var result = controller.GetMember(cardId);
+            var createdMember = new EmployeeDto()
+            {
+                Name = "Test User"
+            };
 
-        //    // Assert 
-        //    userRepo.Verify(x => x.GetUserByCardId(cardId), Times.Once);
-        //}
+            var memebershipRepo = new Mock<IMembershipRepository>();
+
+            memebershipRepo.Setup(x => x.AddMember(newMember)).Returns(createdMember);
+
+            // Act
+            var controller = new EmployeeController(memebershipRepo.Object);
+            var result = controller.AddMember(newMember);
+
+            // Assert 
+            memebershipRepo.Verify(x => x.AddMember(newMember), Times.Once);
+        }
         #endregion
 
         #region Integration Tests

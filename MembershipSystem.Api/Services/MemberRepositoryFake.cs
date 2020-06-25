@@ -54,24 +54,24 @@ namespace MembershipSystem.Api.Services
             return new EmployeeDto { Name = emp.Value.Name };
         }
 
-        public EmployeeDto AddMember(Member user)
+        public EmployeeDto AddMember(Member member)
         {
             var employee = new Employee()
             {
-                EmployeeId = user.EmployeeId,
-                Name = user.Name,
-                Email = user.Email,
-                Mobile = user.Mobile
+                EmployeeId = member.EmployeeId,
+                Name = member.Name,
+                Email = member.Email,
+                Mobile = member.Mobile
             };
 
             var card = new Card()
             {
-                CardId = user.CardId,
-                EmployeeId = user.EmployeeId,
-                Pin = user.Pin
+                CardId = member.CardId,
+                EmployeeId = member.EmployeeId,
+                Pin = member.Pin
             };
 
-            if (employees.TryAdd(user.EmployeeId, employee) && cards.TryAdd(user.CardId, card))
+            if (employees.TryAdd(member.EmployeeId, employee) && cards.TryAdd(member.CardId, card))
             {
                 return new EmployeeDto { Name = employee.Name };
             }
@@ -80,16 +80,5 @@ namespace MembershipSystem.Api.Services
                 return null;
             }
         }
-
-        //public UserDto AddUser(User user)
-        //{
-        //    var createdUser = users.Where(u => u.CardId == user.CardId).FirstOrDefault();
-
-        //    if (createdUser != null)
-        //    {
-        //        return null;
-
-        //    return createdUser;
-        //}
     }
 }
