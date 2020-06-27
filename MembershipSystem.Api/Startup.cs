@@ -29,6 +29,7 @@ namespace MembershipSystem.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IExecuters, Executers>();
+            services.AddTransient<IMembersCommandText, MembersCommandText>();
             services.AddTransient<ICommandText, CommandText>();
             services.AddTransient<IMemberService, MemberService>();
             services.AddTransient<IMembershipRepository, MemberRepository>();

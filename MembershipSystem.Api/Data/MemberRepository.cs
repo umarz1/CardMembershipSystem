@@ -14,13 +14,13 @@ namespace MembershipSystem.Api.Services
     public class MemberRepository: IMembershipRepository
     {
         private readonly IConfiguration _configuration;
-        private readonly ICommandText _commandText;
+        private readonly IMembersCommandText _membersCommandText;
         private readonly string _connStr;
         private readonly IExecuters _executers;
 
-        public MemberRepository(IConfiguration configuration, ICommandText commandText, IExecuters executers)
+        public MemberRepository(IConfiguration configuration, IMembersCommandText membersCommandText, IExecuters executers)
         {
-            _commandText = commandText;
+            _membersCommandText = membersCommandText;
             _configuration = configuration;
             _connStr = _configuration.GetConnectionString("Dapper");
             _executers = executers;
@@ -29,7 +29,7 @@ namespace MembershipSystem.Api.Services
         public MemberDto GetMember(string cardId)
         {
             var member = _executers.ExecuteCommand<Member>(_connStr, conn =>
-            conn.Query<Member>(_commandText.GetMemberByCardId, new { @CardId = cardId }).SingleOrDefault());
+            conn.Query<Member>(_membersCommandText.GetMemberByCardId, new { @CardId = cardId }).SingleOrDefault());
 
             return new MemberDto
             {
@@ -44,10 +44,10 @@ namespace MembershipSystem.Api.Services
             {
                 _executers.ExecuteCommand(_connStr, conn =>
                 {
-                    var addMember= conn.Query<NewMember>(_commandText.AddMember,
+                    var addMember= conn.Query<NewMember>(_membersCommandText.AddMember,
                         new { EmployeeId = member.EmployeeId, Name = member.Name, Email = member.Email, Mobile = member.Mobile});
 
-                    var addCard = conn.Query<NewMember>(_commandText.AddCard,
+                    var addCard = conn.Query<NewMember>(_membersCommandText.AddCard,
                         new { CardId = member.CardId, EmployeeId = member.EmployeeId, Pin= member.Pin });
                 });
 
