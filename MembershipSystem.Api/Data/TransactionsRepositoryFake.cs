@@ -17,11 +17,11 @@ namespace MembershipSystem.Api.Services
     public class TransactionsRepositoryFake : ITransactionsRepository
     {
         private readonly IConfiguration _configuration;
-        private readonly ICommandText _commandText;
+        private readonly ITransactionsCommandText _commandText;
         private readonly string _connStr;
         private readonly IExecuters _executers;
 
-        public TransactionsRepositoryFake(IConfiguration configuration, ICommandText commandText, IExecuters executers)
+        public TransactionsRepositoryFake(IConfiguration configuration, ITransactionsCommandText commandText, IExecuters executers)
         {
             _commandText = commandText;
             _configuration = configuration;

@@ -1,10 +1,7 @@
 ﻿namespace MembershipSystem.Api.Services.Queries
 {
-    public interface ICommandText
+    public interface ITransactionsCommandText
     {
-        string GetMemberByCardId { get; }
-        string AddMember { get; }
-
         string AddCard { get; }
 
         string GetLatestCardTransactionByCardId { get; }

@@ -30,8 +30,9 @@ namespace MembershipSystem.Api
         {
             services.AddTransient<IExecuters, Executers>();
             services.AddTransient<IMembersCommandText, MembersCommandText>();
-            services.AddTransient<ICommandText, CommandText>();
+            services.AddTransient<ITransactionsCommandText, TransactionsCommandText>();
             services.AddTransient<IMemberService, MemberService>();
+            services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IMembershipRepository, MemberRepository>();
             services.AddTransient<ITransactionsRepository,TransactionsRepository>();
             services.AddMvc();

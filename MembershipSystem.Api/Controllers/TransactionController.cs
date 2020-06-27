@@ -12,11 +12,11 @@ namespace MembershipSystem.Api.Controllers
     [Route("")]
     public class TransactionController : ControllerBase
     {
-        private readonly ITransactionsRepository _cardTransactionsRepository;
+        private readonly ITransactionService _transactionService;
 
-        public TransactionController(ITransactionsRepository cardTransactionsRepository)
+        public TransactionController(ITransactionService transactionService)
         {
-            _cardTransactionsRepository = cardTransactionsRepository;
+            _transactionService = transactionService;
         }
 
         [HttpGet("transactions/balance/{cardId}")]
@@ -24,7 +24,7 @@ namespace MembershipSystem.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<BalanceDto> GetLatestBalance(string cardId)
         {
-            var balance = _cardTransactionsRepository.GetBalance(cardId);
+            var balance = _transactionService.GetBalance(cardId);
 
             if (balance == null)
             {
@@ -44,7 +44,7 @@ namespace MembershipSystem.Api.Controllers
                 return BadRequest("Amount must greater than zero");
             }
 
-            var response = _cardTransactionsRepository.AddAmount(adjustAmount);
+            var response = _transactionService.AddAmount(adjustAmount);
 
             if (response == null)
             {
