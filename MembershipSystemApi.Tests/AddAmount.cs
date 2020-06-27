@@ -47,12 +47,12 @@ namespace MembershipSystemApi.Tests
                 Balance = 10
             };
 
-            var transactionsRepo = new Mock<ITransactionsRepository>();
+            var transactionService = new Mock<ITransactionService>();
 
-            transactionsRepo.Setup(x => x.AddAmount(newAmount)).Returns(newBalance);
+            transactionService.Setup(x => x.AddAmount(newAmount)).Returns(newBalance);
 
             // Act
-            var controller = new TransactionController(transactionsRepo.Object);
+            var controller = new TransactionController(transactionService.Object);
             var result =  controller.AddAmount(newAmount);
 
             var resultMember = (CreatedAtActionResult)result;
@@ -78,12 +78,12 @@ namespace MembershipSystemApi.Tests
                 Balance = 10
             };
 
-            var transactionsRepo = new Mock<ITransactionsRepository>();
+            var transactionService = new Mock<ITransactionService>();
 
-            transactionsRepo.Setup(x => x.AddAmount(It.IsAny<AdjustAmount>())).Returns(() => null);
+            transactionService.Setup(x => x.AddAmount(It.IsAny<AdjustAmount>())).Returns(() => null);
 
             // Act
-            var controller = new TransactionController(transactionsRepo.Object);
+            var controller = new TransactionController(transactionService.Object);
             var result = (StatusCodeResult)controller.AddAmount(newAmount);
 
             // Assert
@@ -107,16 +107,16 @@ namespace MembershipSystemApi.Tests
                 Balance = 10
             };
 
-            var transactionsRepo = new Mock<ITransactionsRepository>();
+            var transactionService = new Mock<ITransactionService>();
 
-            transactionsRepo.Setup(x => x.AddAmount(newAmount)).Returns(newBalance);
+            transactionService.Setup(x => x.AddAmount(newAmount)).Returns(newBalance);
 
             // Act
-            var controller = new TransactionController(transactionsRepo.Object);
+            var controller = new TransactionController(transactionService.Object);
             var result = controller.AddAmount(newAmount);
 
             // Assert 
-            transactionsRepo.Verify(x => x.AddAmount(newAmount), Times.Once);
+            transactionService.Verify(x => x.AddAmount(newAmount), Times.Once);
         }
         #endregion
 
