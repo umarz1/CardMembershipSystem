@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace MembershipSystem.Api.DTOs
 {
-    public class CardTransactionDto
+    public class BalanceDto
     {
-        public DateTime Date { get; set; }
         public decimal Balance { get; set; }
     }
 }

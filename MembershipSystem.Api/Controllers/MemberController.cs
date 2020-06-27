@@ -10,11 +10,11 @@ namespace MembershipSystem.Api.Controllers
     [Route("")]
     public class MemberController : ControllerBase
     {
-        private readonly IMembershipRepository _membershipRepository;
+        private readonly IMemberService _memberService;
 
-        public MemberController(IMembershipRepository membershipRepository)
+        public MemberController(IMemberService memberService)
         {
-            _membershipRepository = membershipRepository;
+            _memberService = memberService;
         }
 
         [HttpGet("members/{cardId}")]
@@ -22,7 +22,7 @@ namespace MembershipSystem.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<MemberDto> GetMember(string cardId)
         {
-            var member = _membershipRepository.GetMember(cardId);
+            var member = _memberService.GetMember(cardId);
 
             if (member == null)
             {
@@ -37,7 +37,7 @@ namespace MembershipSystem.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult AddMember([FromBody]NewMember member)
         {
-            var response = _membershipRepository.AddMember(member);
+            var response = _memberService.AddMember(member);
 
             if (response == null)
             {

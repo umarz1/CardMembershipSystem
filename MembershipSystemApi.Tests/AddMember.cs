@@ -48,12 +48,12 @@ namespace MembershipSystemApi.Tests
                 Name = "Test User"
             };
 
-            var membershipRepo = new Mock<IMembershipRepository>();
+            var memberService = new Mock<IMemberService>();
 
-            membershipRepo.Setup(x => x.AddMember(newMember)).Returns(createdMember);
+            memberService.Setup(x => x.AddMember(newMember)).Returns(createdMember);
 
             // Act
-            var controller = new MemberController(membershipRepo.Object);
+            var controller = new MemberController(memberService.Object);
             var result = controller.AddMember(newMember);
 
             var resultMember = (CreatedAtActionResult)result;
@@ -67,12 +67,12 @@ namespace MembershipSystemApi.Tests
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
-            var membershipRepo = new Mock<IMembershipRepository>();
+            var memberService = new Mock<IMemberService>();
 
-            membershipRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
+            memberService.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new MemberController(membershipRepo.Object);
+            var controller = new MemberController(memberService.Object);
             var result = controller.GetMember(cardId);
 
             // Assert
@@ -100,16 +100,16 @@ namespace MembershipSystemApi.Tests
                 Name = "Test User"
             };
 
-            var memebershipRepo = new Mock<IMembershipRepository>();
+            var memberService = new Mock<IMemberService>();
 
-            memebershipRepo.Setup(x => x.AddMember(newMember)).Returns(createdMember);
+            memberService.Setup(x => x.AddMember(newMember)).Returns(createdMember);
 
             // Act
-            var controller = new MemberController(memebershipRepo.Object);
+            var controller = new MemberController(memberService.Object);
             var result = controller.AddMember(newMember);
 
             // Assert 
-            memebershipRepo.Verify(x => x.AddMember(newMember), Times.Once);
+            memberService.Verify(x => x.AddMember(newMember), Times.Once);
         }
         #endregion
 

@@ -20,7 +20,7 @@ INSERT INTO Cards
            ,'8881')
 GO
 
-INSERT INTO CardTransactions
+INSERT INTO Transactions
            (TransactionId
            ,CardId
            ,Date

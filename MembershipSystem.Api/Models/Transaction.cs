@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MembershipSystem.Api.Models
 {
-    public class CardTransaction
+    public class Transaction
     {
         public Guid TransactionId { get; set; }
         public string CardId { get; set; }

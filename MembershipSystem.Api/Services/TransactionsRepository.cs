@@ -12,14 +12,14 @@ using Microsoft.Extensions.Configuration;
 
 namespace MembershipSystem.Api.Services
 {
-    public class CardTransactionsRepository : ICardTransactionsRepository
+    public class TransactionsRepository : ITransactionsRepository
     {
         private readonly IConfiguration _configuration;
         private readonly ICommandText _commandText;
         private readonly string _connStr;
         private readonly IExecuters _executers;
 
-        public CardTransactionsRepository(IConfiguration configuration, ICommandText commandText, IExecuters executers)
+        public TransactionsRepository(IConfiguration configuration, ICommandText commandText, IExecuters executers)
         {
             _commandText = commandText;
             _configuration = configuration;
@@ -27,26 +27,25 @@ namespace MembershipSystem.Api.Services
             _executers = executers;
         }
 
-        public CardTransactionDto GetBalance(string cardId)
+        public BalanceDto GetBalance(string cardId)
         {
-            var lastTransaction = _executers.ExecuteCommand<CardTransaction>(_connStr, conn =>
-            conn.Query<CardTransaction>(_commandText.GetLatestCardTransactionByCardId, new { @CardId = cardId }).SingleOrDefault());
+            var lastTransaction = _executers.ExecuteCommand<Transaction>(_connStr, conn =>
+            conn.Query<Transaction>(_commandText.GetLatestCardTransactionByCardId, new { @CardId = cardId }).SingleOrDefault());
 
             if(lastTransaction == null)
             {
                 return null;
             }
 
-            return new CardTransactionDto
+            return new BalanceDto
             {
-                Date = lastTransaction.Date,
                 Balance = lastTransaction.Balance
             };
         }
 
-        public CardTransactionDto AddAmount(AdjustAmount adjustAmount )
+        public BalanceDto AddAmount(AdjustAmount adjustAmount )
         {
-            var lastestBalance = new CardTransactionDto();
+            var lastestBalance = new BalanceDto();
 
             try
             {
