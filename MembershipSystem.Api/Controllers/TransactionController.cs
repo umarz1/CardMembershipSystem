@@ -39,11 +39,6 @@ namespace MembershipSystem.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult AddAmount([FromBody]AdjustAmount adjustAmount)
         {
-            if(adjustAmount.Amount < 0)
-            {
-                return BadRequest("Amount must greater than zero");
-            }
-
             var response = _transactionService.AddAmount(adjustAmount);
 
             if (response == null)

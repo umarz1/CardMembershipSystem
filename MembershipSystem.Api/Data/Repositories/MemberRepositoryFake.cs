@@ -31,31 +31,31 @@ namespace MembershipSystem.Api.Services
                 return null;
             }
 
-            var emp = members.Where(e => e.Value.EmployeeId == card.Value.EmployeeId).FirstOrDefault();
+            var member = members.Where(m => m.Value.EmployeeId == card.Value.EmployeeId).FirstOrDefault();
 
-            return new MemberDto { Name = emp.Value.Name };
+            return new MemberDto { Name = member.Value.Name };
         }
 
-        public MemberDto AddMember(NewMember member)
+        public MemberDto AddMember(NewMember newMember)
         {
-            var employee = new Member()
+            var member = new Member()
             {
-                EmployeeId = member.EmployeeId,
-                Name = member.Name,
-                Email = member.Email,
-                Mobile = member.Mobile
+                EmployeeId = newMember.EmployeeId,
+                Name = newMember.Name,
+                Email = newMember.Email,
+                Mobile = newMember.Mobile
             };
 
             var card = new Card()
             {
-                CardId = member.CardId,
-                EmployeeId = member.EmployeeId,
-                Pin = member.Pin
+                CardId = newMember.CardId,
+                EmployeeId = newMember.EmployeeId,
+                Pin = newMember.Pin
             };
 
-            if (members.TryAdd(member.EmployeeId, employee) && cards.TryAdd(member.CardId, card))
+            if (members.TryAdd(member.EmployeeId, member) && cards.TryAdd(newMember.CardId, card))
             {
-                return new MemberDto { Name = employee.Name };
+                return new MemberDto { Name = member.Name };
             }
             else
             {

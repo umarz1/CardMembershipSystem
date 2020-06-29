@@ -48,7 +48,8 @@ namespace MembershipSystem.Api.Services
                         new { EmployeeId = member.EmployeeId, Name = member.Name, Email = member.Email, Mobile = member.Mobile});
 
                     var addCard = conn.Query<NewMember>(_membersCommandText.AddCard,
-                        new { CardId = member.CardId, EmployeeId = member.EmployeeId, Pin= member.Pin });
+                        new { CardId = member.CardId, EmployeeId = member.EmployeeId, Pin = member.Pin });
+
                 });
 
                 createdMember = GetMember(member.CardId);

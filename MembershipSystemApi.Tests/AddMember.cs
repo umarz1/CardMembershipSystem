@@ -28,7 +28,7 @@ namespace MembershipSystemApi.Tests
         #region Unit Tests
 
         [Fact]
-        public async Task AddMember_Returns_Member_When_Created()
+        public async Task AddMember_Controller_Action_Returns_Member_When_Created()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
@@ -63,7 +63,7 @@ namespace MembershipSystemApi.Tests
         }
 
         [Fact]
-        public async Task AddMember_Returns_Null_If_Fails_To_Create()
+        public async Task AddMember_Controller_Action_Returns_Null_If_Fails_To_Create()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
@@ -80,10 +80,11 @@ namespace MembershipSystemApi.Tests
         }
 
         [Fact]
-        public async Task AddMember_Is_Called_Once()
+        public async Task AddMember_Database_Call_Is_Made_Once()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
+            var memberRepo = new Mock<IMembershipRepository>();
 
             var newMember = new NewMember
             {
@@ -100,16 +101,14 @@ namespace MembershipSystemApi.Tests
                 Name = "Test User"
             };
 
-            var memberService = new Mock<IMemberService>();
-
-            memberService.Setup(x => x.AddMember(newMember)).Returns(createdMember);
+            memberRepo.Setup(x => x.AddMember(It.IsAny<NewMember>())).Returns(() => null);
 
             // Act
-            var controller = new MemberController(memberService.Object);
-            var result = controller.AddMember(newMember);
+            var memberService = new MemberService(memberRepo.Object);
+            var result = memberService.AddMember(newMember);
 
             // Assert 
-            memberService.Verify(x => x.AddMember(newMember), Times.Once);
+            memberRepo.Verify(x => x.AddMember(It.IsAny<NewMember>()), Times.Once);
         }
         #endregion
 
@@ -171,6 +170,40 @@ namespace MembershipSystemApi.Tests
                     employeeId = "1234",
                     name = "Test User",
                     email = "test.user@hotmail.co.uk",
+                    mobile = "07746312234",
+                    pin = "7727"
+                });
+
+            // Act
+            var response = await client.SendAsync(request);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+
+        [Fact]
+        public async Task Invalid_Request_Returns_Bad_Request()
+        {
+            // Arrange
+            var client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddScoped<IMembershipRepository, MemberRepositoryFake>();
+                });
+            }).CreateClient();
+
+            var existingCardId = "VyDJ0lbYcPkzp2Ju";
+            var invalidEmail = "test.user";
+
+            var request = new HttpRequestMessage(HttpMethod.Post, $"/members")
+                .WithJsonContent(new
+                {
+                    cardId = existingCardId,
+                    employeeId = "1234",
+                    name = "Test User",
+                    email = invalidEmail,
                     mobile = "07746312234",
                     pin = "7727"
                 });

@@ -27,7 +27,7 @@ namespace MembershipSystemApi.Tests
         #region Unit Tests
 
         [Fact]
-        public async Task GetMember_Returns_Member_If_Member_Exists()
+        public async Task GetMember_Controller_Action_Returns_Member_If_Member_Exists()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
@@ -50,7 +50,7 @@ namespace MembershipSystemApi.Tests
         }
 
         [Fact]
-        public async Task GetMember_Returns_Null_If_Member_Does_Not_Exists()
+        public async Task GetMember_Controller_Action_Returns_Null_If_Member_Does_Not_Exists()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
@@ -67,20 +67,20 @@ namespace MembershipSystemApi.Tests
         }
 
         [Fact]
-        public async Task GetMember_Is_Called_Once()
+        public async Task GetMember_Database_Call_Is_Made_Once()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
-            var memberService = new Mock<IMemberService>();
+            var memberRepo = new Mock<IMembershipRepository>();
 
-            memberService.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
+            memberRepo.Setup(x => x.GetMember(It.IsAny<string>())).Returns(() => null);
 
             // Act
-            var controller = new MemberController(memberService.Object);
-            var result = controller.GetMember(cardId);
+            var memberService = new MemberService(memberRepo.Object);
+            var result = memberService.GetMember(cardId);
 
             // Assert 
-            memberService.Verify(x => x.GetMember(cardId), Times.Once);
+            memberRepo.Verify(x => x.GetMember(cardId), Times.Once);
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace MembershipSystemApi.Tests
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Jaaa";
-            var memberRepo= new Mock<IMembershipRepository>();
+            var memberRepo = new Mock<IMembershipRepository>();
 
             memberRepo.Setup(m => m.GetMember(cardId)).Returns(() => null);
 

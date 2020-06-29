@@ -31,7 +31,7 @@ namespace MembershipSystemApi.Tests
         #region Unit Tests
 
         [Fact]
-        public async Task AddAmount_Returns_Latest_Balance_When_Amount_Added()
+        public async Task AddAmount_Controller_Action_Returns_Latest_Balance_When_Amount_Added()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
@@ -62,7 +62,7 @@ namespace MembershipSystemApi.Tests
         }
 
         [Fact]
-        public async Task AddAmount_Returns_BadRequest_If_Amendment_Fails()
+        public async Task AddAmount_Controller_Action_Returns_BadRequest_If_Amendment_Fails()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
@@ -91,7 +91,7 @@ namespace MembershipSystemApi.Tests
         }
 
         [Fact]
-        public async Task AddMember_Is_Called_Once()
+        public async Task AddMember_Database_Call_Is_Made_Once()
         {
             // Arrange
             var cardId = "ByDJ0lbYcPkzp2Ja";
@@ -107,16 +107,16 @@ namespace MembershipSystemApi.Tests
                 Balance = 10
             };
 
-            var transactionService = new Mock<ITransactionService>();
+            var transactionRepo = new Mock<ITransactionsRepository>();
 
-            transactionService.Setup(x => x.AddAmount(newAmount)).Returns(newBalance);
+            transactionRepo.Setup(x => x.AddAmount(newAmount)).Returns(newBalance);
 
             // Act
-            var controller = new TransactionController(transactionService.Object);
-            var result = controller.AddAmount(newAmount);
+            var transactionService = new TransactionService(transactionRepo.Object);
+            var result = transactionService.AddAmount(newAmount);
 
             // Assert 
-            transactionService.Verify(x => x.AddAmount(newAmount), Times.Once);
+            transactionRepo.Verify(x => x.AddAmount(newAmount), Times.Once);
         }
         #endregion
 
@@ -170,6 +170,32 @@ namespace MembershipSystemApi.Tests
                 {
                     cardId = "VyDJ0lbYcPkzp2Ju",
                     amount = -20,
+                });
+
+
+            // Act
+            var response = await client.SendAsync(request);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Invalid_Request_Returns_Bad_Request()
+        {
+            // Arrange
+            var client = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddScoped<ITransactionsRepository, TransactionsRepositoryFake>();
+                });
+            }).CreateClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Post, $"transactions/amend-amount")
+                .WithJsonContent(new
+                {
+                    cardId = "VyDJ0lbYcPkzp2Ju"
                 });
 
 
