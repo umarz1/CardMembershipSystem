@@ -2,8 +2,6 @@
 {
     public class TransactionsCommandText : ITransactionsCommandText
     {
-        public string AddCard => @"INSERT INTO Cards (CardId, EmployeeId, Pin)
-                                   VALUES (@CardId, @EmployeeId, @Pin)";
 
         public string GetLatestCardTransactionByCardId => @"SELECT TOP(1) ct.TransactionId, ct.CardId, ct.Date, ct.Amount, ct.Balance
                                           FROM Transactions ct 

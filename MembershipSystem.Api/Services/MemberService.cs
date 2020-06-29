@@ -17,16 +17,20 @@ namespace MembershipSystem.Api.Services
             _membershipRepo = membershipRepo;
         }
 
-        MemberDto IMemberService.GetMember(string cardId)
-        {
-            var member = _membershipRepo.GetMember(cardId);
-            return member;
-        }
-
         public MemberDto AddMember(NewMember member)
         {
             var addMember = _membershipRepo.AddMember(member);
             return addMember;
+        }
+
+        public MemberDto GetMember(string cardId)
+        {
+            if (cardId.Length != 16)
+            {
+                return null;
+            }
+            var member = _membershipRepo.GetMember(cardId);
+            return member;
         }
     }
 }

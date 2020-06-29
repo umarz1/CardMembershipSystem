@@ -2,8 +2,6 @@
 {
     public interface ITransactionsCommandText
     {
-        string AddCard { get; }
-
         string GetLatestCardTransactionByCardId { get; }
 
         string AddAmountToCard { get; }

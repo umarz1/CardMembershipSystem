@@ -82,6 +82,23 @@ namespace MembershipSystemApi.Tests
             // Assert 
             memberService.Verify(x => x.GetMember(cardId), Times.Once);
         }
+
+        [Fact]
+        public async Task GetMember_Returns_Null_When_Card_Id_More_Than_Sixteen_Digits()
+        {
+            // Arrange
+            var cardId = "ByDJ0lbYcPkzp2Jaaa";
+            var memberRepo= new Mock<IMembershipRepository>();
+
+            memberRepo.Setup(m => m.GetMember(cardId)).Returns(() => null);
+
+            // Act
+            var memberService = new MemberService(memberRepo.Object);
+            var result = memberService.GetMember(cardId);
+
+            // Assert 
+            Assert.Equal(null, result);
+        }
         #endregion
 
         #region Integration Tests
