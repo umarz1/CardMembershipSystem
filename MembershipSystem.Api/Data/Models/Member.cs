@@ -7,7 +7,7 @@ namespace MembershipSystem.Api.Models
 {
     public class Member
     {
-        public string EmployeeId { get; set; }
+        public string MemberId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Mobile { get; set; }

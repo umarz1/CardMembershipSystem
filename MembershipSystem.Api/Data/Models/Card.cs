@@ -8,7 +8,7 @@ namespace MembershipSystem.Api.Models
     public class Card
     {
         public string CardId { get; set; }
-        public string EmployeeId { get; set; }
+        public string MemberId { get; set; }
         public string Pin { get; set; }
     }
 }

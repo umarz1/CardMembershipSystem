@@ -45,10 +45,10 @@ namespace MembershipSystem.Api.Services
                 _executers.ExecuteCommand(_connStr, conn =>
                 {
                     var addMember= conn.Query<NewMember>(_membersCommandText.AddMember,
-                        new { EmployeeId = member.EmployeeId, Name = member.Name, Email = member.Email, Mobile = member.Mobile});
+                        new { MemberId = member.MemberId, Name = member.Name, Email = member.Email, Mobile = member.Mobile});
 
                     var addCard = conn.Query<NewMember>(_membersCommandText.AddCard,
-                        new { CardId = member.CardId, EmployeeId = member.EmployeeId, Pin = member.Pin });
+                        new { CardId = member.CardId, EmployeeId = member.MemberId, Pin = member.Pin });
 
                 });
 

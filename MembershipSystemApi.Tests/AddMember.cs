@@ -37,7 +37,7 @@ namespace MembershipSystemApi.Tests
             {
                 CardId = cardId,
                 Name = "Test User",
-                EmployeeId = "1234",
+                MemberId = "1234",
                 Email = "test.user@hotmail.com",
                 Mobile = "0774564154",
                 Pin = "3433"
@@ -90,7 +90,7 @@ namespace MembershipSystemApi.Tests
             {
                 CardId = cardId,
                 Name = "Test User",
-                EmployeeId = "1234",
+                MemberId = "1234",
                 Email = "test.user@hotmail.com",
                 Mobile = "0774564154",
                 Pin = "3433"

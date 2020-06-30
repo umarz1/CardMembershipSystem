@@ -8,7 +8,7 @@ namespace MembershipSystem.Api.Models
         [StringLength(16)]
         public string CardId { get; set; }
         [Required]
-        public string EmployeeId { get; set; }
+        public string MemberId { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
