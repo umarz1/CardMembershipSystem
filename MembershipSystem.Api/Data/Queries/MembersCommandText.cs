@@ -7,8 +7,9 @@
                                           JOIN Cards c ON m.MemberId= c.MemberId 
                                           WHERE c.CardId = @CardId";
 
-        public string AddMember => @"INSERT INTO Members (MemberId, Name, Email, Mobile)
-                                   VALUES (@MemberId, @Name, @Email, @Mobile)";
+        public string AddMember => @"IF NOT EXISTS (SELECT * FROM Members WHERE MemberId = @MemberId)
+                                        INSERT INTO Members (MemberId, Name, Email, Mobile)
+                                        VALUES (@MemberId, @Name, @Email, @Mobile)";
 
         public string AddCard => @"INSERT INTO Cards (CardId, MemberId, Pin)
                                    VALUES (@CardId, @MemberId, @Pin)";

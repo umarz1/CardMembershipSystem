@@ -1,23 +1,23 @@
 ﻿INSERT INTO Members
-           (EmployeeId
+           (MemberId
            ,Name
            ,Email
            ,Mobile)
      VALUES
            ('1234'
-           ,'Umar Zahir'
+           ,'Muhammad Umar Zahir'
            ,'muhammad.zahir@sainsburys.co.uk'
-           ,'07746314396')
+           ,'07746314389')
 GO
 
 INSERT INTO Cards
            (CardId
-           ,EmployeeId
+           ,MemberId
            ,Pin)
      VALUES
            ('VyDJ0lbYcPkzp2Ju'
            ,'1234'
-           ,'8881')
+           ,'9999')
 GO
 
 INSERT INTO Transactions

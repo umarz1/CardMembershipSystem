@@ -130,7 +130,7 @@ namespace MembershipSystemApi.Tests
                 .WithJsonContent(new
                 {
                     cardId = "ByDJ0lbYcPkzp2Jx",
-                    employeeId = "1234",
+                    memberId = "1234",
                     name = "Test User",
                     email = "test.user@hotmail.co.uk",
                     mobile = "07746312234",
@@ -167,7 +167,7 @@ namespace MembershipSystemApi.Tests
                 .WithJsonContent(new
                 {
                     cardId = existingCardId,
-                    employeeId = "1234",
+                    memberId = "1234",
                     name = "Test User",
                     email = "test.user@hotmail.co.uk",
                     mobile = "07746312234",
@@ -201,7 +201,7 @@ namespace MembershipSystemApi.Tests
                 .WithJsonContent(new
                 {
                     cardId = existingCardId,
-                    employeeId = "1234",
+                    memberId = "1234",
                     name = "Test User",
                     email = invalidEmail,
                     mobile = "07746312234",
