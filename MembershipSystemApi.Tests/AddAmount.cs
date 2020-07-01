@@ -181,7 +181,7 @@ namespace MembershipSystemApi.Tests
         }
 
         [Fact]
-        public async Task Invalid_Request_Returns_Bad_Request()
+        public async Task Invalid_Request_Missing_Amount_Returns_Bad_Request()
         {
             // Arrange
             var client = _factory.WithWebHostBuilder(builder =>
