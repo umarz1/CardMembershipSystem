@@ -31,6 +31,11 @@ namespace MembershipSystem.Api.Services
             var member = _executers.ExecuteCommand<Member>(_connStr, conn =>
             conn.Query<Member>(_membersCommandText.GetMemberByCardId, new { @CardId = cardId }).SingleOrDefault());
 
+            if (member == null)
+            {
+                return null;
+            }
+
             return new MemberDto
             {
                 Name = member.Name
